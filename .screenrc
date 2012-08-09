@@ -1,0 +1,21 @@
+# -*-coding:utf-8-*-
+
+# screen -c .screenrc
+# screen -r
+
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m-%d %D %C%a "
+shelltitle '$ |bash'
+
+vbell off
+startup_message off
+
+defscrollback 50000
+
+
+# screen使用操作
+# ------
+# 切换屏幕 ctrl+a+<n>
+# 切换回滚模式 ctrl+a+[ ，esc+esc退出
+# 命名屏幕 ctrl+a+A
