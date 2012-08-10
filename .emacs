@@ -237,7 +237,7 @@
           (tags-todo "工作")))
         ("h" "家庭"
          ((agenda "")
-          (tags-todo "学习")
+          (tags-todo "学习")))
         ))
 
 ;; Org-Remember设置
