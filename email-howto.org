@@ -1,0 +1,96 @@
+
+#+TITLE:邮件解决方案
+
+* 收信 - fetchmail
+
+配置文件 [[~/.fetchmailrc]]
+
+kebing@poly:~$ cat .fetchmailrc
+set daemon 30
+
+poll mail.xunlei.com
+uidl
+protocol POP3
+user "hepengfei"
+password "<password>"
+#keep
+
+# 要在放最后 
+mda "/usr/bin/maildrop -V 6 -d %T"
+
+结合mutt使用时，使用G按键即可调用fetchmail收信；每天按一次即可。
+最好将fetchmail加入到crontab中自动运行：
+*/10 * * * * /usr/bin/env fetchmail
+
+* 分类 - maildrop
+
+在fetchmail配置文件中设置调用maildrop分类邮件。
+邮件分类后，最终放置在 [[~/Mail/]] 目录下。
+
+配置文件 [[~/.mailfilter]]
+帮助请查手册 man maildrop 或 man mailfilter
+
+
+* 看信 - mutt
+
+配置文件 [[~/.muttrc]]
+
+信件目录为 [[~/Mail]] ，下面有以下几类信箱：
+    - inbox :: 收件箱
+    - sent-XXXXXX :: 发件箱，按年月自动分
+    - others :: 其它收件箱，由maildrop投递进来
+
+* 编辑 - emacs
+
+在bash环境变量中设置 EDITOR="emacs -nw -q" 即可。
+
+
+* 发信 - msmtp
+
+配置文件 [[~/.msmtprc]]
+
+说明：auth login： 必须设置为login，不能为on，否则会出错；但缺点是明文
+传输用户名和密码，设为on需要服务器支持其它加密选项，gmail应该可以。
+
+可以使用以下命令查看服务器信息。
+kebing@poly:~$ msmtp --host=mail.xunlei.com --serverinfo SMTP server
+at mail.xunlei.com ([121.9.214.147]), port 25: xunlei.com Anti-spam GT
+for Coremail System (mttest[080917]) Capabilities: PIPELINING: Support
+for command grouping for faster transmission AUTH: Supported
+authentication methods: PLAIN LOGIN
+
+* 在emacs中收发邮件
+
+emacs中收发邮件操作感觉不错，但唯一的问题就是速度。
+收取邮件时，会有点卡，严重影响其它操作。
+所以最好还是将管理邮件的工作放到更专业的mutt中吧。
+
+** 收信 M-x rmail
+只要如下配置，即可从这里收邮件，收取的邮件放在 ~/RMAIL 中。默认是从
+/var/mail/<username>中收取。
+
+#+BEGIN_SRC elisp
+(setq rmail-primary-inbox-list '("/home/hepengfei/Mail/inbox"))
+#+END_SRC
+
+- 按h键，可以查看邮件列表。
+- 按m键，可以写邮件。
+- 按q键，退出。
+
+** 发信
+如下配置，即可发送邮件。
+#+BEGIN_SRC elisp
+(setq send-mail-function 'smtpmail-send-it)
+(setq smtpmail-smtp-server "mail.xunlei.com")
+;;(setq smtpmail-smtp-service 25)         ;587 for gmail
+#+END_SRC
+
+具体使用方法，可查看info文档[[info:smtpmail:Emacs Speaks SMTP]]。
+
+
+
+# Local Variables:
+# mode: org
+# coding: utf-8
+# End:
+

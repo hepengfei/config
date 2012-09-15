@@ -1,0 +1,118 @@
+
+# 当 Mutt 用 thread 方式显示时，是否用纯 ascii 表示树状列表。
+#set ascii_chars=yes
+
+#folder-hook . set sort=threads
+
+set sendmail="msmtp"
+set from="hepengfei@xunlei.com"
+set realname="贺鹏飞"
+
+# 不要自动翻到下一封邮件
+set pager_stop=yes
+
+# 调用的外部程序退出后，按一个键才返回
+set wait_key=yes
+
+# 查看邮件内容时，同时显示几行邮件列表
+set pager_index_lines=7
+
+#source ~/.mailbox.d/mutt.alias
+#set alias_file=~/.mailbox.d/mutt.alias
+
+# 默认信箱目录
+set folder = $HOME/Mail
+mailboxes = "=inbox"
+mailboxes = "=archive"
+mailboxes = "=monitor"
+
+# 进入mutt后默认使用的信箱，要与dropmail设置相同
+set spoolfile = "=inbox-`date +%Y%m`"
+
+# 保存已发送的信箱。
+# 你发出的邮件保存到那个信箱文件？比如可以像我这样每个月发出的信件放在不同的文件里。
+set record="=sent-`date +%Y%m`"
+
+set include=yes   # 回复时包含原文
+
+# 终端的编码
+set charset="UTF-8"
+# 外发邮件使用的编码
+set send_charset="GB18030"
+## 发信时，尝试的编码
+#set send_charset="us-ascii:iso-8859-1:gb18030:utf-8"
+
+# 用中文格式显示日期
+set locale="zh_CN.UTF-8"
+# 解决没有设置字符编码的信件显示为乱码的问题
+charset-hook ^us-ascii$ GB18030
+# 解决主题为utf-8的信件标题显示为乱码的问题
+charset-hook !UTF-8 GB18030
+# 解决未经过MIME编码的信件显示为乱码的问题
+#set strict_mime=no
+set assumed_charset="GB18030"
+# 解决中文附件名为乱码的问题
+set rfc2047_parameters=yes
+
+
+# 那些类型的附件是允许直接通过 .mailcap 浏览的？
+auto_view text/html
+
+
+# 打分
+
+# 新信件+4分
+score "~N" +4
+
+## 主题包含 lixian 
+#score "~s lixian" +6
+#score "~s lixian.*ERROR" +8
+# 已经标记删除的 -5
+score "~D" -5
+# 上次没有读的 +1
+score "~O" +1
+## 包含 “believe”的 -10(垃圾广告！)。
+#score "~s believe" -10
+
+
+# 排序方式。可以是
+
+   # date 
+   # date-sent
+   # date-received
+   # from
+   # mailbox-order (unsorted)
+   # score
+   # size
+   # subject
+   # threads
+   # to
+
+#几种方式，每种方式可以在前面加一个 "reverse-" 前缀表示反方向排序。我一般按分数排序：
+
+#set sort=score
+set sort=threads
+# 当用 thread 排序方式时，我们对各个 thread 的相对排序顺序。
+set sort_aux=reverse-date
+
+
+
+# 如果设置，当你按 "r" 回信时，就不会再提示你输入回信地址和主题，直接进入编辑模式。 
+set fast_reply
+
+
+
+
+# 你只要把信件用 save-message 函数保存到你的垃圾箱，比如 ~/Mail/Trash，信件会被自动做上 "D"(删除) 标志。为了让 "d" 可以保存到垃圾箱，你可以把 "d" 键绑定到一个宏。但是如果你要删除垃圾箱里的邮件，这个宏会再次把垃圾箱的邮件存储到垃圾箱，产生循环。所以你应该使用 folder-hook 在垃圾箱里把 "d" 恢复到原来的 delete-message 函数，而在其它信箱使用那个宏。
+
+#现在你可以用以下设置得到一个“垃圾箱”的功能。第一次按 "d" 时有可能会被讯问是否建立这个信箱(Trash).
+
+
+#使用 G 键运行 fetchmail ，以激活后台运行的fetchmail程序
+macro index G "!fetchmail\r"
+macro pager G "!fetchmail\r"
+
+
+# Local Variables:
+# coding: utf-8
+# End:

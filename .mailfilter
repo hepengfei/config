@@ -1,0 +1,26 @@
+
+#logfile "/tmp/maildrop.log"
+
+MAIL="${HOME}/Mail"
+
+DATE=`date +%Y%m`
+DAY=`date +%Y%m%d`
+
+INBOX="${MAIL}/inbox-${DATE}"
+MONITOR="${MAIL}/monitor-${DAY}"
+
+if ( /^From:.*\@cc.sandai.net/ || /^From:.*monitor\@xunlei.com/ )
+{
+    if ( /^Subject:.*new_vip_show.sh/ )
+    {
+        to "${INBOX}"
+    }
+    else
+    {
+        to "${MONITOR}"
+    }
+}
+else
+{
+    to "${INBOX}"
+}

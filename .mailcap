@@ -1,0 +1,9 @@
+### -*-coding:utf-8-*-
+###
+### 我的自定义 mailcap 配置文件，是对 /etc/mailcap 的补充
+###
+
+
+#application/vnd.ms-excel; /usr/bin/xdg-open %s; needsterminal
+
+text/html; /usr/bin/w3m -I %{charset} -T text/html -dump %s; copiousoutput

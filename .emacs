@@ -63,6 +63,11 @@
 ;; 操作设置
 ;; 
 
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+(require 'yasnippet)
+(yas/global-mode 1)
+
 (setq x-select-enable-clipboard t) ; 与系统剪贴版互通
 
 ;; C-x C-b 缺省的绑定很不好用，改成一个比较方便的 electric-buffer-list，执行
@@ -140,9 +145,12 @@
     
     ;; windows下的配置
     (progn
-      (set-default-font "Consolas-11")
-      ;; (set-default-font "Lucida Sans Typewriter-11")
-      ;; (set-default-font "Lucida Console-11")
+      (set-frame-font "Consolas-14")
+      ;;(set-frame-font "SimSun-12")
+      ;;(set-frame-font "宋体-12")
+      (set-fontset-font (frame-parameter nil 'font)  'han '("Microsoft YaHei" . "unicode-bmp"))
+      (set-fontset-font (frame-parameter nil 'font)  'symbol '("Microsoft YaHei" . "unicode-bmp"))
+      (set-fontset-font (frame-parameter nil 'font)  'cjk-misc '("Microsoft YaHei" . "unicode-bmp"))
       )
 
   ;; gnu/linux下的配置
@@ -258,10 +266,9 @@
 (setq send-mail-function 'smtpmail-send-it)
 ;; If you use Message or Gnus.
 (setq message-send-mail-function 'smtpmail-send-it)
-(setq smtpmail-smtp-server "mail.xxx.com")
+(setq smtpmail-smtp-server "mail.xunlei.com")
 ;;(setq smtpmail-smtp-service 25)         ;587
-(setq smtpmail-auth-credentials
-      '(("mail.xxx.com" 25 "<username>" nil)))
+;;(setq rmail-primary-inbox-list '("~/Mail/inbox"))
 
 ;; ;; Use STARTTLS without authentication against the server.
 ;; (setq smtpmail-starttls-credentials
@@ -310,17 +317,29 @@
 
 
 ;; TAB and RET auto align and indent
-(defun my-indent-or-complete ()
-  (interactive)
-  (if (looking-at "\\>")
-      (hippie-expand nil)
-    (indent-for-tab-command)))
-(add-hook 'c-mode-common-hook
-          (function (lambda ()
-                      (define-key c-mode-base-map [(tab)] 'my-indent-or-complete)
-                      (define-key c-mode-base-map [(control m)] 'align-newline-and-indent)
-                      (c-toggle-auto-state))))
+;; (defun my-indent-or-complete ()
+;;   (interactive)
+;;   (if (looking-at "\\>")
+;;       (hippie-expand nil)
+;;     (indent-for-tab-command)))
+;; (add-hook 'c-mode-common-hook
+;;           (function (lambda ()
+;;                       (define-key c-mode-base-map [(tab)] 'my-indent-or-complete)
+;;                       (define-key c-mode-base-map [(control m)] 'align-newline-and-indent)
+;;                       (c-toggle-auto-state))))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(auth-source-save-behavior nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 ;; Local Variables:
 ;; mode: emacs-lisp
 ;; coding: utf-8

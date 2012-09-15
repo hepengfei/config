@@ -1,0 +1,16 @@
+
+#
+# Set up aliases and functions
+#
+
+export EDITOR="emacs -nw -q"
+export EMAIL="hepengfei@xunlei.com"
+export REPLYTO="hepengfei@xunlei.com"
+
+
+#
+# Set up environment
+#
+
+PATH=$PATH:$HOME/bin
+export PATH
