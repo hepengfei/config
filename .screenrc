@@ -5,14 +5,13 @@
 
 hardstatus on
 hardstatus alwayslastline
-hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m-%d %D %C%a "
+hardstatus string "%{.bW}%-w%{.rW}%n %t%{-}%+w %=%{..G} %H %{..Y} %m-%d %c:%s "
 shelltitle '$ |bash'
 
 vbell off
 startup_message off
 
 defscrollback 50000
-
 
 # screen使用操作
 # ------

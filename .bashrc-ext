@@ -12,5 +12,5 @@ export REPLYTO="hepengfei@xunlei.com"
 # Set up environment
 #
 
-PATH=$PATH:$HOME/bin
-export PATH
+export PATH=$PATH:$HOME/bin
+export PS1="\w> "

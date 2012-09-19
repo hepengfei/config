@@ -58,6 +58,19 @@
 (setq-default indent-tabs-mode nil)    ; 用空格替换tab
 (setq mark-diary-entries-in-calendar t); 标记有日记的日期
 
+;; dired模式的配置，可实现通过M-o隐藏不重要的文件。具体可参考[[info:Dired-X]]
+(add-hook 'dired-load-hook
+          (lambda ()
+            (load "dired-x")
+            ;; Set dired-x global variables here.
+            (setq dired-omit-files (concat dired-omit-files "\\|^\\.\\|~$"))
+            ))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            ;; Set dired-x buffer-local variables here.
+            (dired-omit-mode 1)
+            ))
+
 
 ;; 
 ;; 操作设置
@@ -126,14 +139,6 @@
 
 
 
-(defvar mypath-home
-  (if (string= system-type "windows-nt")
-      "H:"
-    "~"))
-
-;; setup mypath-personal
-(setq mypath-personal (concat mypath-home "/personal"))
-
 ;; 
 ;; 字体设置
 ;; 
@@ -141,40 +146,30 @@
 ;; (setq default-frame-alist (append '((font . "fontset-mymono")) default-frame-alist))
 
 
-(if (string= system-type "windows-nt")
-    
-    ;; windows下的配置
-    (progn
-      (set-frame-font "Consolas-14")
-      ;;(set-frame-font "SimSun-12")
-      ;;(set-frame-font "宋体-12")
-      (set-fontset-font (frame-parameter nil 'font)  'han '("Microsoft YaHei" . "unicode-bmp"))
-      (set-fontset-font (frame-parameter nil 'font)  'symbol '("Microsoft YaHei" . "unicode-bmp"))
-      (set-fontset-font (frame-parameter nil 'font)  'cjk-misc '("Microsoft YaHei" . "unicode-bmp"))
-      )
 
-  ;; gnu/linux下的配置
-  (progn
-    (set-default-font "DejaVu Sans Mono-12") ; Linux下的默认字体
-
-    ;; 设置中文字体
-    (if window-system
+;; 设置字体
+(if window-system
+    (if (string= system-type "windows-nt")
+        ;; windows下的配置
         (progn
-          ;;(set-fontset-font (frame-parameter nil 'font)  'han '("WenQuanYi Bitmap Song" . "unicode-bmp"))
-          ;;(set-fontset-font (frame-parameter nil 'font)  'han '("WenQuanYi ZenHei" . "unicode-bmp"))
-          ;;(set-fontset-font (frame-parameter nil 'font)  'han '("WenQuanYi Unibit" . "unicode-bmp"))
+          (set-frame-font "Consolas-14")
+          ;;(set-frame-font "SimSun-12")
+          ;;(set-frame-font "宋体-12")
+          (set-fontset-font (frame-parameter nil 'font)  'han '("Microsoft YaHei" . "unicode-bmp"))
+          (set-fontset-font (frame-parameter nil 'font)  'symbol '("Microsoft YaHei" . "unicode-bmp"))
+          (set-fontset-font (frame-parameter nil 'font)  'cjk-misc '("Microsoft YaHei" . "unicode-bmp"))
+          )
 
-          ;;(set-fontset-font (frame-parameter nil 'font)  'han '("DejaVu Sans Mono-15" . "unicode-bmp"))
-          ;;(set-fontset-font (frame-parameter nil 'font)  'unicode '("DejaVu Sans Mono-15" . "unicode-bmp"))
-          
-
-          ;;(set-fontset-font (frame-parameter nil 'font) 'unicode '("Microsoft YaHei" . "unicode-bmp"))
-          (set-fontset-font (frame-parameter nil 'font) 'han '("Microsoft YaHei" . "unicode-bmp"))
-          (set-fontset-font (frame-parameter nil 'font) 'symbol '("Microsoft YaHei" . "unicode-bmp"))
-          (set-fontset-font (frame-parameter nil 'font) 'cjk-misc '("Microsoft YaHei" . "unicode-bmp"))
-          ))
-    )
-  )
+      ;; GNU/Linux下的配置
+      (progn
+        ;;(set-frame-font "文泉驿等宽正黑-14") ; Linux下的默认字体
+        (set-frame-font "Consolas-14")
+        (set-fontset-font (frame-parameter nil 'font)  'han '("Microsoft YaHei" . "unicode-bmp"))
+        (set-fontset-font (frame-parameter nil 'font)  'symbol '("Microsoft YaHei" . "unicode-bmp"))
+        (set-fontset-font (frame-parameter nil 'font)  'cjk-misc '("Microsoft YaHei" . "unicode-bmp"))
+        )
+      
+      ))
 
 
 
@@ -238,24 +233,24 @@
 ;; 
 
 ;; name and email
-(setq user-full-name "He Pengfei")
+(setq user-full-name "贺鹏飞")
 (setq user-mail-address "hepengfei@xunlei.com")
 
 ;; 默认的日记文件
-(setq diary-file (concat mypath-personal "/diary"))
+(setq diary-file "~/Notes/Diary")
 
 ;; org文件设置
-(setq org-directory (concat mypath-personal "/org"))
-(setq org-agenda-files (list (concat org-directory "/hepengfei.org")))
+(setq org-directory "~/Notes/")
+(setq org-agenda-files (list (concat org-directory "/Todos.org")))
 
-(setq org-default-notes-file (concat org-directory "/notes.org"))
+(setq org-default-notes-file (concat org-directory "/Capture.org"))
 
 
 ;; 缺省书签文件的路径及文件名。
-(setq bookmark-default-file (concat mypath-personal "/bookmarks"))
+(setq bookmark-default-file "~/.emacs.d/bookmarks")
 
 ;; 缺省的定义缩写的文件。
-(setq abbrev-file-name (concat mypath-personal "/abbrevs"))
+(setq abbrev-file-name "~/.emacs.d/abbrevs")
 
 ;; email configuration
 
@@ -289,31 +284,6 @@
 ;; (semantic-load-enable-guady-code-helpers)
 ;; (semantic-load-enable-excessive-code-helpers)
 ;; (semantic-load-enable-semantic-debugging-helpers)
-
-
-;; ;(add-to-list 'load-path (concat mypath-emacs.d "/plugins/ecb"))
-;; (add-to-list 'load-path "H:/Program Files/ecb-snap")
-;; (load-file "H:/Program Files/ecb-snap/ecb.el")
-;; (require 'ecb)
-;; (require 'ecb-autoloads)
-
-
-;; (custom-set-variables
-;;   ;; custom-set-variables was added by Custom.
-;;   ;; If you edit it by hand, you could mess it up, so be careful.
-;;   ;; Your init file should contain only one such instance.
-;;   ;; If there is more than one, they won't work right.
-;;  '(ecb-options-version "2.40")
-;;  '(inhibit-startup-screen f))
-;; (custom-set-faces
-;;   ;; custom-set-faces was added by Custom.
-;;   ;; If you edit it by hand, you could mess it up, so be careful.
-;;   ;; Your init file should contain only one such instance.
-;;   ;; If there is more than one, they won't work right.
-;;  )
-
-;; ;; 启动时不显示tip
-;; (setq ecb-tip-of-the-day nil) 
 
 
 ;; TAB and RET auto align and indent

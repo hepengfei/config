@@ -63,6 +63,8 @@ auto_view text/html
 
 # 新信件+4分
 score "~N" +4
+# 发给我的邮件+8分
+score "~p" +8
 
 ## 主题包含 lixian 
 #score "~s lixian" +6
@@ -88,12 +90,12 @@ score "~O" +1
    # threads
    # to
 
-#几种方式，每种方式可以在前面加一个 "reverse-" 前缀表示反方向排序。我一般按分数排序：
+#几种方式，每种方式可以在前面加一个 "reverse-" 前缀表示反方向排序。
 
-#set sort=score
-set sort=threads
-# 当用 thread 排序方式时，我们对各个 thread 的相对排序顺序。
-set sort_aux=reverse-date
+set sort=date
+###set sort=threads
+#### 当用 thread 排序方式时，我们对各个 thread 的相对排序顺序。
+###set sort_aux=reverse-date
 
 
 
